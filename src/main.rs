@@ -1,7 +1,7 @@
 use macroquad::prelude::*;
+use map::procces_map;
 use player::Player;
 use renderer::{Renderer, FOV, TILE};
-use map::procces_map;
 
 pub mod map;
 pub mod player;
@@ -25,7 +25,16 @@ fn generate_cfg(resolution: f32) -> Config {
     }
 }
 
-#[macroquad::main("Engine")]
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Engine".to_owned(),
+        window_width: 1280,
+        window_height: 720,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
 async fn main() {
     let cfg = generate_cfg(screen_width());
     set_pc_assets_folder("assets");
@@ -61,7 +70,7 @@ async fn main() {
         renderer.render_main(map.clone(), player.x, player.y, player.angle, &cfg);
         Renderer::minimap(map.clone(), player.x, player.y, player.angle);
 
-        draw_text(format!("FPS: {}", get_fps()).as_str(), 0., 16., 32., WHITE);
+        //draw_text(format!("FPS: {}", get_fps()).as_str(), 0., 16., 32., WHITE);
         next_frame().await
     }
 }
